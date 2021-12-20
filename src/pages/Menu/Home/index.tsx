@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ProCard from '@ant-design/pro-card';
-import { Statistic, Card, Row, Col } from 'antd';
+import { Statistic, Row, Col } from 'antd';
 // import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { Line, Pie, measureTextWidth, Column } from '@ant-design/charts';
+// import { fetchDashboard } from '@/services/home';
 
 const Home = () => {
   //折线图 start
@@ -15,9 +16,19 @@ const Home = () => {
         console.log('fetch data failed', error);
       });
   };
+
   useEffect(() => {
+    //获取折线图数据
     asyncFetch();
+    let demoData;
+    // const getDemoData = async () => {
+    //   await fetchDashboard().then((d) => {
+    //     return (demoData = d);
+    //   });
+    // };
+    console.log(demoData);
   }, []);
+
   const config = {
     data,
     xField: 'year',
@@ -294,6 +305,24 @@ const Home = () => {
             <ProCard title="">
               <Statistic title="在编人数" value={99} valueStyle={{ color: '#3f8600' }} />
               <Statistic title="平均干部年限" value={99} valueStyle={{ color: '#3f8600' }} />
+            </ProCard>
+          </ProCard>
+        </Col>
+
+        <Col xs={24} sm={12} md={12} lg={8} xl={6}>
+          <ProCard
+            title="接口测试数据"
+            extra={<a href="#">More</a>}
+            split="vertical"
+            bordered
+            headerBordered
+          >
+            <ProCard title="" colSpan="50%">
+              <Statistic title="用户数" value={99} valueStyle={{ color: '#3f8600' }} />
+              <Statistic title="商品数" value={99} valueStyle={{ color: '#3f8600' }} />
+            </ProCard>
+            <ProCard title="">
+              <Statistic title="订单数" value={99} valueStyle={{ color: '#3f8600' }} />
             </ProCard>
           </ProCard>
         </Col>
