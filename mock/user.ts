@@ -162,4 +162,62 @@ export default {
   },
 
   'GET  /api/login/captcha': getFakeCaptcha,
+
+  //自己mock的数据
+  'POST /api/auth/login': async (req: Request, res: Response) => {
+    const { password, userName, type } = req.body;
+    await waitTime(2000);
+    if (password === 'qwer' && userName === 'admin') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'admin',
+        access_token:
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkudGVzdFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYwNzUyMDE0MSwiZXhwIjoxNjA3NTIzNzQxLCJuYmYiOjE2MDc1MjAxNDEsImp0aSI6IktVdWFsTmxnOXYzZmlTZHEiLCJzdWIiOjMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.BpVdvBjKEhQ2aIZBfkE-SoU2a3UeFkYCKQKh42Ncbio',
+        token_type: 'Bearer',
+        expires_in: 3600,
+      });
+      return;
+    }
+    if (password === 'qwer' && userName === 'user') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'user',
+        access_token:
+          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hcGkudGVzdFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYwNzUyMDE0MSwiZXhwIjoxNjA3NTIzNzQxLCJuYmYiOjE2MDc1MjAxNDEsImp0aSI6IktVdWFsTmxnOXYzZmlTZHEiLCJzdWIiOjMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.BpVdvBjKEhQ2aIZBfkE-SoU2a3UeFkYCKQKh42Ncbio',
+        token_type: 'Bearer',
+        expires_in: 3600,
+      });
+      return;
+    }
+    res.send({
+      status: 'error',
+      type,
+      currentAuthority: 'guest',
+    });
+  },
+
+  'GET /api/admin/user': {
+    id: 1,
+    name: '超级管理员',
+    email: 'super@a.com',
+    phone: null,
+    avatar: null,
+    avatar_url: '',
+    is_locked: 0,
+    created_at: '2020-12-22T02:58:08.000000Z',
+    updated_at: '2020-12-22T04:32:27.000000Z',
+  },
+
+  'GET /api/admin/index': {
+    users_count: 7,
+    goods_count: 237,
+    order_count: 1,
+  },
+
+  'POST /api/auth/logout': {
+    status: 200,
+    message: '请求成功',
+  },
 };

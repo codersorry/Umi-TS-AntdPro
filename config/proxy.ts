@@ -9,7 +9,8 @@
 export default {
   dev: {
     '/api/': {
-      target: 'https://api.shop.eduwork.cn/',
+      // target: 'https://api.shop.eduwork.cn/',
+      target: 'https://preview.pro.ant.design',
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },

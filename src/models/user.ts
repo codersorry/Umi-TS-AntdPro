@@ -60,7 +60,6 @@ const UserModel: UserModelType = {
       } else {
         response = JSON.parse(userInfo);
       }
-
       yield put({
         type: 'saveCurrentUser',
         payload: response,

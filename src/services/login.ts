@@ -6,11 +6,9 @@ export type LoginParamsType = {
 };
 //执行登录,获取token
 export async function fakeAccountLogin(params: LoginParamsType) {
-  const newParams = { email: params.userName, password: params.password };
-  console.log(newParams);
   return request('/auth/login', {
     method: 'POST',
-    data: newParams,
+    data: params,
   });
 }
 

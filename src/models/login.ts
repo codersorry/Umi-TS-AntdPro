@@ -35,7 +35,7 @@ const Model: LoginModelType = {
       const response = yield call(fakeAccountLogin, payload);
 
       //登录成功返回状态undefined,失败返回401
-      if (response.status === undefined) {
+      if (response.status === 'ok') {
         //登录成功在进行put
         yield put({
           type: 'changeLoginStatus',
@@ -44,6 +44,9 @@ const Model: LoginModelType = {
         //跳转到主页
         message.success('登录成功！');
         history.replace('/');
+      }
+      if (response.status === 'error') {
+        message.error('账号或密码错误');
       }
       // Login successfully
       //请求成功的跳转，可以根据自己的实际状态来写，不用写的这么麻烦
@@ -77,7 +80,7 @@ const Model: LoginModelType = {
       const response = yield call(logout);
 
       //判断是否登录成功（根据实际情况填写判断条件）
-      if (response.status === undefined) {
+      if (response.status === 200) {
         //删除本地token和userInfo
         localStorage.removeItem('access_token');
         localStorage.removeItem('userInfo');

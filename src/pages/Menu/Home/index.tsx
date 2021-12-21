@@ -3,11 +3,12 @@ import ProCard from '@ant-design/pro-card';
 import { Statistic, Row, Col } from 'antd';
 // import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { Line, Pie, measureTextWidth, Column } from '@ant-design/charts';
-// import { fetchDashboard } from '@/services/home';
+import { fetchDashboard } from '@/services/home';
 
 const Home = () => {
   //折线图 start
   const [data, setData] = useState([]);
+  const [demoData, setDemoData] = useState({});
   const asyncFetch = () => {
     fetch('https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json')
       .then((response) => response.json())
@@ -20,15 +21,12 @@ const Home = () => {
   useEffect(() => {
     //获取折线图数据
     asyncFetch();
-    let demoData;
-    // const getDemoData = async () => {
-    //   await fetchDashboard().then((d) => {
-    //     return (demoData = d);
-    //   });
-    // };
-    console.log(demoData);
+    async function getDemoData() {
+      const demoData1 = await fetchDashboard();
+      setDemoData(demoData1);
+    }
+    getDemoData();
   }, []);
-
   const config = {
     data,
     xField: 'year',
@@ -216,7 +214,7 @@ const Home = () => {
   return (
     <div className="site-statistic-demo-card">
       {/* 栅格之间的间隔 [左右间隔, 上下间隔] */}
-      <Row gutter={[16, 16]}>
+      <Row justify="start" gutter={[16, 16]}>
         <Col xs={24} sm={12} md={12} lg={8} xl={6}>
           <ProCard
             title="本年度上报情况"
@@ -226,17 +224,7 @@ const Home = () => {
             headerBordered
           >
             <ProCard title="" colSpan="50%">
-              <Statistic
-                title="总数"
-                value={99}
-                //小数点精确位数
-                // precision={2}
-                valueStyle={{ color: '#3f8600' }}
-                //数字前面添加icon
-                // prefix={<ArrowUpOutlined />}
-                //数字后面添加符号，如：%
-                // suffix="%"
-              />
+              <Statistic title="总数" value={99} valueStyle={{ color: '#3f8600' }} />
             </ProCard>
             <ProCard title="">
               <Statistic title="通过" value={98} valueStyle={{ color: '#3f8600' }} />
@@ -245,7 +233,6 @@ const Home = () => {
           </ProCard>
         </Col>
         <Col xs={24} sm={12} md={12} lg={8} xl={6}>
-          {/* <Col span={6}> */}
           <ProCard
             title="档案情况"
             extra={<a href="#">More</a>}
@@ -270,7 +257,7 @@ const Home = () => {
             bordered
             headerBordered
           >
-            <ProCard title="">
+            <ProCard title="" colSpan="50%">
               <Statistic title="立档单位" value={99} valueStyle={{ color: '#3f8600' }} />
               <Statistic title="下属单位" value={99} valueStyle={{ color: '#3f8600' }} />
             </ProCard>
@@ -302,9 +289,9 @@ const Home = () => {
             bordered
             headerBordered
           >
-            <ProCard title="">
+            <ProCard title="" colSpan="50%">
               <Statistic title="在编人数" value={99} valueStyle={{ color: '#3f8600' }} />
-              <Statistic title="平均干部年限" value={99} valueStyle={{ color: '#3f8600' }} />
+              <Statistic title="平均年限" value={99} valueStyle={{ color: '#3f8600' }} />
             </ProCard>
           </ProCard>
         </Col>
@@ -318,11 +305,23 @@ const Home = () => {
             headerBordered
           >
             <ProCard title="" colSpan="50%">
-              <Statistic title="用户数" value={99} valueStyle={{ color: '#3f8600' }} />
-              <Statistic title="商品数" value={99} valueStyle={{ color: '#3f8600' }} />
+              <Statistic
+                title="用户数"
+                value={demoData.users_count}
+                valueStyle={{ color: '#3f8600' }}
+              />
+              <Statistic
+                title="商品数"
+                value={demoData.goods_count}
+                valueStyle={{ color: '#3f8600' }}
+              />
             </ProCard>
             <ProCard title="">
-              <Statistic title="订单数" value={99} valueStyle={{ color: '#3f8600' }} />
+              <Statistic
+                title="订单数"
+                value={demoData.order_count}
+                valueStyle={{ color: '#3f8600' }}
+              />
             </ProCard>
           </ProCard>
         </Col>
