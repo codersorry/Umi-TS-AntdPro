@@ -5,10 +5,11 @@ type DefaultSettings = Partial<ProSettings> & {
 };
 
 const proSettings: DefaultSettings = {
-  navTheme: 'dark',
+  navTheme: 'light',
   // 拂晓蓝
   primaryColor: '#1890ff',
-  layout: 'side',
+  layout: 'mix', //   side/top/mix
+  headerTheme: 'light', // mix模式下生效
   contentWidth: 'Fluid',
   fixedHeader: false,
   fixSiderbar: true,
