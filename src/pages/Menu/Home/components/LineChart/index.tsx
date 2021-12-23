@@ -18,122 +18,122 @@ const LineChart = () => {
 
   const data = [
     {
-      month: '1',
+      month: '1月',
       value: 100,
       category: '全宗数',
     },
     {
-      month: '1',
+      month: '1月',
       value: 88,
       category: '卷数',
     },
     {
-      month: '2',
+      month: '2月',
       value: 200,
       category: '全宗数',
     },
     {
-      month: '2',
+      month: '2月',
       value: 155,
       category: '卷数',
     },
     {
-      month: '3',
+      month: '3月',
       value: 210,
       category: '全宗数',
     },
     {
-      month: '3',
+      month: '3月',
       value: 360,
       category: '卷数',
     },
     {
-      month: '4',
+      month: '4月',
       value: 88,
       category: '全宗数',
     },
     {
-      month: '4',
+      month: '4月',
       value: 350,
       category: '卷数',
     },
     {
-      month: '5',
+      month: '5月',
       value: 360,
       category: '全宗数',
     },
     {
-      month: '5',
+      month: '5月',
       value: 666,
       category: '卷数',
     },
     {
-      month: '6',
+      month: '6月',
       value: 333,
       category: '全宗数',
     },
     {
-      month: '6',
+      month: '6月',
       value: 450,
       category: '卷数',
     },
     {
-      month: '7',
+      month: '7月',
       value: 99,
       category: '全宗数',
     },
     {
-      month: '7',
+      month: '7月',
       value: 52,
       category: '卷数',
     },
     {
-      month: '8',
+      month: '8月',
       value: 66,
       category: '全宗数',
     },
     {
-      month: '8',
+      month: '8月',
       value: 222,
       category: '卷数',
     },
     {
-      month: '9',
+      month: '9月',
       value: 111,
       category: '全宗数',
     },
     {
-      month: '9',
+      month: '9月',
       value: 85,
       category: '卷数',
     },
     {
-      month: '10',
+      month: '10月',
       value: 45,
       category: '全宗数',
     },
     {
-      month: '10',
+      month: '10月',
       value: 230,
       category: '卷数',
     },
     {
-      month: '11',
+      month: '11月',
       value: 99,
       category: '全宗数',
     },
     {
-      month: '11',
+      month: '11月',
       value: 222,
       category: '卷数',
     },
     {
-      month: '12',
+      month: '12月',
       value: 351,
       category: '全宗数',
     },
     {
-      month: '12',
+      month: '12月',
       value: 222,
       category: '卷数',
     },
@@ -145,18 +145,13 @@ const LineChart = () => {
   // }, []);
   const config = {
     data,
-    xField: 'year',
+    xField: 'month',
     yField: 'value',
     seriesField: 'category',
     xAxis: {
-      month: '1',
     },
     yAxis: {
-      // label: {
-      //   // 数值格式化为千分位
-      //   formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
-      // },
-      value: '2',
+
     },
   };
   //折线图 end

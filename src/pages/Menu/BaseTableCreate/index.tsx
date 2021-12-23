@@ -4,6 +4,7 @@ import { Button, Tag, Space } from 'antd';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable, { TableDropdown } from '@ant-design/pro-table';
 import request from 'umi-request';
+import './index.less';
 
 type GithubIssueItem = {
   url: string;
@@ -28,7 +29,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
     width: 48,
   },
   {
-    title: '标题',
+    title: '名称',
     dataIndex: 'title',
     copyable: true,
     ellipsis: true,
@@ -43,30 +44,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
     },
   },
   {
-    title: '状态',
-    dataIndex: 'state',
-    filters: true,
-    onFilter: true,
-    valueType: 'select',
-    valueEnum: {
-      all: { text: '全部', status: 'Default' },
-      open: {
-        text: '未解决',
-        status: 'Error',
-      },
-      closed: {
-        text: '已解决',
-        status: 'Success',
-        disabled: true,
-      },
-      processing: {
-        text: '解决中',
-        status: 'Processing',
-      },
-    },
-  },
-  {
-    title: '标签',
+    title: '备注',
     dataIndex: 'labels',
     search: false,
     renderFormItem: (_, { defaultRender }) => {
@@ -90,20 +68,7 @@ const columns: ProColumns<GithubIssueItem>[] = [
     sorter: true,
     hideInSearch: true,
   },
-  {
-    title: '创建时间',
-    dataIndex: 'created_at',
-    valueType: 'dateRange',
-    hideInTable: true,
-    search: {
-      transform: (value) => {
-        return {
-          startTime: value[0],
-          endTime: value[1],
-        };
-      },
-    },
-  },
+
   {
     title: '操作',
     valueType: 'option',
@@ -135,6 +100,8 @@ const BaseTableCreate = () => {
   const actionRef = useRef<ActionType>();
   return (
     <ProTable<GithubIssueItem>
+      options={false}
+      rowSelection={{}}
       columns={columns}
       actionRef={actionRef}
       request={async (params = {}, sort, filter) => {
@@ -153,13 +120,14 @@ const BaseTableCreate = () => {
         persistenceType: 'localStorage',
       }}
       rowKey="id"
-      // 是否开启搜索
-      search={false}
+      search={{
+        labelWidth: 'auto',
+      }}
       pagination={{
-        pageSize: 10,
+        pageSize: 12,
       }}
       dateFormatter="string"
-      headerTitle="高级表格"
+      // headerTitle="高级表格"
       toolBarRender={() => [
         <Button key="button" icon={<PlusOutlined />} type="primary">
           新建
