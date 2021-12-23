@@ -1,3 +1,4 @@
+import { message } from 'antd';
 import { Request, Response } from 'express';
 
 const waitTime = (time: number = 100) => {
@@ -219,5 +220,77 @@ export default {
   'POST /api/auth/logout': {
     status: 200,
     message: '请求成功',
+  },
+
+  'POST /api/tablecreate/add': {
+    status: 200,
+    message: '添加成功',
+  },
+
+  'PUT /api/tablecreate/edit': {
+    status: 200,
+    message: '编辑成功',
+  },
+
+  'GET /api/tablecreate/gettable': {
+    data: [
+      {
+        id: 1,
+        name: '🧐table1',
+        note: '🐛table1的备注',
+        time: '2000',
+      },
+      {
+        id: 2,
+        name: '🧐table2',
+        note: '🐛table1的备注',
+        time: '2000',
+      },
+      {
+        id: 3,
+        name: '🧐table3',
+        note: '🐛table1的备注',
+        time: '2000',
+      },
+      {
+        id: 4,
+        name: '🧐table4',
+        note: '🐛table1的备注',
+        time: '2000',
+      },
+      {
+        id: 5,
+        name: '🧐table5',
+        note: '🐛table1的备注',
+        time: '2000',
+      },
+      {
+        id: 6,
+        name: '🧐table6',
+        note: '🐛table1的备注',
+        time: '2000',
+      },
+      {
+        id: 7,
+        name: '🧐table7',
+        note: '🐛table1的备注',
+        time: '2000',
+      },
+      {
+        id: 8,
+        name: '🧐table8',
+        note: '🐛table1的备注',
+        time: '2000',
+      },
+      {
+        id: 9,
+        name: '🧐table9',
+        note: '🐛table1的备注',
+        time: '2000',
+      },
+    ],
+    page: 1,
+    success: true,
+    total: 9,
   },
 };
