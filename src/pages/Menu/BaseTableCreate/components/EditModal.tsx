@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import ProForm, { ProFormText, ProFormSelect } from '@ant-design/pro-form';
-import { Modal, Row, Space, message } from 'antd';
+import { Modal, Row, Space, message, Button } from 'antd';
 
 import { updateTable } from '@/services/baseTableCreate';
 
@@ -15,13 +15,13 @@ const EditModal = (props) => {
     console.log(values);
     const response = await updateTable(record.id, values);
     if (response.status === 200) {
-      message.success('添加成功');
+      message.success('编辑成功');
       //刷新表格数据
       actionRef.current?.reload();
       //关闭弹窗
       isShowModalEdit(false);
     } else {
-      message.error('添加失败');
+      message.error('编辑失败');
       isShowModalEdit(false);
     }
   };
@@ -43,7 +43,14 @@ const EditModal = (props) => {
           render: (props, doms) => {
             return (
               <Row>
-                <Space className="subBtn">{doms}</Space>
+                <Space className="subBtn">
+                  {[
+                    <Button type="primary" htmlType="submit">
+                      保存
+                    </Button>,
+                    <Button onClick={() => isShowModalEdit(false)}>取消</Button>,
+                  ]}
+                </Space>
               </Row>
             );
           },

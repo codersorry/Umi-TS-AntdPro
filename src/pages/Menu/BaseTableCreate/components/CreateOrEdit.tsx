@@ -1,35 +1,46 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ProForm, { ProFormText, ProFormSelect } from '@ant-design/pro-form';
 import { Modal, Row, Space, message, Button } from 'antd';
 
 import { addTable } from '@/services/baseTableCreate';
+import { updateTable } from '@/services/baseTableCreate';
 
-const CreateModal = (props) => {
-  const { isModalVisible, isShowModal, actionRef } = props;
-  //发送请求，新增数据
-  const createTable = async (values) => {
-    console.log(values);
-    const response = await addTable(values);
+const CreateOrEdit = (props) => {
+  //props获取的数据： 控制模态框开启的值/是否打开模态框函数/操作表格的引用/record
+  const { isModalVisible, isShowModal, actionRef, record } = props;
+  const type = record ? '编辑' : '新增';
+  //提交触发的事件
+  const handleSubmit = async (values) => {
+    let response;
+    if (record) {
+      //发送编辑请求
+      response = await updateTable(record.id, values);
+    } else {
+      //发送新增请求
+      response = await addTable(values);
+    }
     if (response.status === 200) {
-      message.success('添加成功');
+      message.success(`${type}成功`);
       //刷新表格数据
       actionRef.current?.reload();
       //关闭弹窗
       isShowModal(false);
     } else {
-      message.error('添加失败');
+      message.error(`${type}失败`);
       isShowModal(false);
     }
   };
+
   return (
     <Modal
       destroyOnClose={true}
       footer={null}
-      title="新增"
+      title={`${type}`}
       visible={isModalVisible}
       onCancel={() => isShowModal(false)}
     >
       <ProForm
+        initialValues={record}
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 20 }}
         // {...formItemLayout}
@@ -39,18 +50,29 @@ const CreateModal = (props) => {
             return (
               <Row>
                 <Space className="subBtn">
-                  {[
-                    <Button type="primary" htmlType="submit">
-                      创建并编辑
-                    </Button>,
-                    <Button onClick={() => isShowModal(false)}>取消</Button>,
-                  ]}
+                  {record
+                    ? [
+                        <Button key="save" type="primary" htmlType="submit">
+                          保存
+                        </Button>,
+                        <Button key="cancel" onClick={() => isShowModal(false)}>
+                          取消
+                        </Button>,
+                      ]
+                    : [
+                        <Button key="create_and_edit" type="primary" htmlType="submit">
+                          创建并编辑
+                        </Button>,
+                        <Button key="cancel" onClick={() => isShowModal(false)}>
+                          取消
+                        </Button>,
+                      ]}
                 </Space>
               </Row>
             );
           },
         }}
-        onFinish={async (values) => createTable(values)}
+        onFinish={async (values) => handleSubmit(values)}
       >
         <ProFormText
           width="md"
@@ -75,7 +97,7 @@ const CreateModal = (props) => {
               label: '2022',
             },
           ]}
-          name="year"
+          name="time"
           label="年份"
           rules={[{ required: true, message: '请选择年份' }]}
         />
@@ -91,4 +113,4 @@ const CreateModal = (props) => {
   );
 };
 
-export default CreateModal;
+export default CreateOrEdit;

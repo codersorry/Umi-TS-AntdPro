@@ -1,18 +1,12 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { PlusOutlined, EllipsisOutlined } from '@ant-design/icons';
-import { Button, Tag, Space } from 'antd';
+import React, { useRef, useState } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
-import ProTable, { TableDropdown } from '@ant-design/pro-table';
-import request from 'umi-request';
-import CreateModal from './components/CreateModal';
-import EditModal from './components/EditModal';
+import ProTable from '@ant-design/pro-table';
 import { getTable } from '@/services/baseTableCreate';
+import CreateOrEdit from './components/CreateOrEdit';
 
 import './index.less';
-
-//控制弹窗内元素样式
-// type LayoutType = Parameters<typeof ProForm>[0]['layout'];
-// const LAYOUT_TYPE_HORIZONTAL = 'horizontal';
 
 type GithubIssueItem = {
   name: string;
@@ -21,25 +15,15 @@ type GithubIssueItem = {
 };
 
 const BaseTableCreate = () => {
-  //页面加载前请求Table数据
-  // useEffect(() => {
-
-  // }, [])
-
   //表格ref便于自定义操作表格
   const actionRef = useRef<ActionType>();
   //编辑id
   const [record, setRecord] = useState(undefined);
-  //控制弹出框
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isModalVisibleEdit, setIsModalVisibleEdit] = useState(false);
   //控制模态框显示和隐藏
-  const isShowModal = (show: boolean = false) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const isShowModal = (show: boolean = false, getRecord = undefined) => {
     setIsModalVisible(show);
-  };
-  const isShowModalEdit = (show: boolean = false, record) => {
-    setIsModalVisibleEdit(show);
-    setRecord(record);
+    setRecord(getRecord);
   };
 
   const columns: ProColumns<GithubIssueItem>[] = [
@@ -52,17 +36,6 @@ const BaseTableCreate = () => {
     {
       title: '名称',
       dataIndex: 'name',
-      // copyable: true,
-      // ellipsis: true,
-      // tip: '标题过长会自动收缩',
-      // formItemProps: {
-      //   rules: [
-      //     {
-      //       required: true,
-      //       message: '此项为必填项',
-      //     },
-      //   ],
-      // },
     },
     {
       title: '备注',
@@ -85,16 +58,17 @@ const BaseTableCreate = () => {
           key="editable"
           onClick={() => {
             console.log(record);
-
-            isShowModalEdit(true, record);
+            isShowModal(true, record);
           }}
         >
           编辑
         </a>,
-        <a href={record.url} target="_blank" rel="noopener noreferrer" key="view">
+        <a href={record.url} target="_blank" rel="noopener noreferrer" key="create">
           制作
         </a>,
-        <a style={{ color: 'red' }}>删除</a>,
+        <a key="delete" style={{ color: 'red' }}>
+          删除
+        </a>,
       ],
     },
   ];
@@ -102,6 +76,7 @@ const BaseTableCreate = () => {
   return (
     <>
       <ProTable<GithubIssueItem>
+        tableClassName="tableStyle"
         options={false}
         rowSelection={{}}
         columns={columns}
@@ -118,8 +93,12 @@ const BaseTableCreate = () => {
         search={{
           labelWidth: 'auto',
         }}
+        //分页的配置
         pagination={{
           pageSize: 12,
+          size: 'default',
+          //指定每页可以显示多少条
+          pageSizeOptions: ['12', '24', '48', '96'],
         }}
         dateFormatter="string"
         // headerTitle="高级表格"
@@ -134,19 +113,14 @@ const BaseTableCreate = () => {
           </Button>,
         ]}
       />
-      <CreateModal
-        actionRef={actionRef}
-        isModalVisible={isModalVisible}
-        isShowModal={isShowModal}
-      />
-      {/* 根据模态框是否显示决定动态加载编辑模态框组件 */}
-      {!isShowModalEdit ? (
+      {/* 根据模态框是否显示决定动态加载编辑模态框组件，为了触发子组件生命周期 */}
+      {!isShowModal ? (
         ''
       ) : (
-        <EditModal
+        <CreateOrEdit
           actionRef={actionRef}
-          isModalVisibleEdit={isModalVisibleEdit}
-          isShowModalEdit={isShowModalEdit}
+          isModalVisible={isModalVisible}
+          isShowModal={isShowModal}
           record={record}
         />
       )}
