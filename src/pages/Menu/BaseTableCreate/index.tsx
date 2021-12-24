@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { getTable } from '@/services/baseTableCreate';
@@ -26,10 +27,29 @@ const BaseTableCreate = () => {
     setRecord(getRecord);
   };
 
+  //确认删除
+  function confirm() {
+    Modal.confirm({
+      centered: true,
+      title: '删除确认',
+      icon: <ExclamationCircleOutlined />,
+      content: '删除基本信息表将会把已有分发和填写数据一并收回，请谨慎操作！',
+      okText: '确认',
+      cancelText: '取消',
+      onOk() {
+        console.log('OK');
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+
   const columns: ProColumns<GithubIssueItem>[] = [
     //全选
     {
       dataIndex: 'index',
+      title: '序号',
       valueType: 'indexBorder',
       width: 48,
     },
@@ -38,18 +58,22 @@ const BaseTableCreate = () => {
       dataIndex: 'name',
     },
     {
-      title: '备注',
-      dataIndex: 'note',
+      title: '年份',
+      dataIndex: 'year',
       hideInSearch: true,
     },
     {
       title: '创建时间',
-      dataIndex: 'time',
-      // valueType: 'dateTime',
-      // sorter: true,
+      dataIndex: 'createTime',
+      valueType: 'dateTime',
+      sorter: true,
       hideInSearch: true,
     },
-
+    {
+      title: '备注',
+      dataIndex: 'note',
+      hideInSearch: true,
+    },
     {
       title: '操作',
       valueType: 'option',
@@ -66,7 +90,14 @@ const BaseTableCreate = () => {
         <a href={record.url} target="_blank" rel="noopener noreferrer" key="create">
           制作
         </a>,
-        <a key="delete" style={{ color: 'red' }}>
+        <a key="copy">复制</a>,
+        <a
+          key="delete"
+          style={{ color: 'red' }}
+          onClick={() => {
+            confirm();
+          }}
+        >
           删除
         </a>,
       ],
@@ -101,8 +132,7 @@ const BaseTableCreate = () => {
           pageSizeOptions: ['12', '24', '48', '96'],
         }}
         dateFormatter="string"
-        // headerTitle="高级表格"
-        toolBarRender={() => [
+        headerTitle={
           <Button
             onClick={() => isShowModal(true)}
             key="button"
@@ -110,8 +140,18 @@ const BaseTableCreate = () => {
             type="primary"
           >
             新增
-          </Button>,
-        ]}
+          </Button>
+        }
+        // toolBarRender={() => [
+        //   <Button
+        //     onClick={() => isShowModal(true)}
+        //     key="button"
+        //     icon={<PlusOutlined />}
+        //     type="primary"
+        //   >
+        //     新增
+        //   </Button>,
+        // ]}
       />
       {/* 根据模态框是否显示决定动态加载编辑模态框组件，为了触发子组件生命周期 */}
       {!isShowModal ? (

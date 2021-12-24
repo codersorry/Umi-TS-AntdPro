@@ -33,6 +33,7 @@ const CreateOrEdit = (props) => {
 
   return (
     <Modal
+      centered={true}
       destroyOnClose={true}
       footer={null}
       title={`${type}`}
@@ -97,7 +98,7 @@ const CreateOrEdit = (props) => {
               label: '2022',
             },
           ]}
-          name="time"
+          name="year"
           label="年份"
           rules={[{ required: true, message: '请选择年份' }]}
         />

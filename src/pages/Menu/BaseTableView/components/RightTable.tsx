@@ -4,10 +4,6 @@ import { Button } from 'antd';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { getTable } from '@/services/baseTableCreate';
-import MobileInput from './components/MobileInput';
-import SendModal from './components/SendModal.tsx';
-
-import './index.less';
 
 type GithubIssueItem = {
   name: string;
@@ -15,20 +11,14 @@ type GithubIssueItem = {
   note: string;
 };
 
-const BaseTableSend = () => {
+const RightTable = () => {
   //表格ref便于自定义操作表格
   const actionRef = useRef<ActionType>();
-  //控制手机填写模态框显示和隐藏
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const isShowModal = (show: boolean = false) => {
-    setIsModalVisible(show);
-  };
-
-  //控制分发模态框显示和隐藏
-  const [isModalVisibleSend, setisModalVisibleSend] = useState(false);
-  const isShowModalSend = (show: boolean = false) => {
-    setisModalVisibleSend(show);
-  };
+  //控制模态框显示和隐藏
+  // const [isModalVisible, setIsModalVisible] = useState(false);
+  // const isShowModal = (show: boolean = false) => {
+  //   setIsModalVisible(show);
+  // };
 
   const columns: ProColumns<GithubIssueItem>[] = [
     //全选
@@ -74,6 +64,9 @@ const BaseTableSend = () => {
   return (
     <>
       <ProTable<GithubIssueItem>
+        scroll={{
+          y: 566,
+        }}
         tableClassName="tableStyle"
         options={false}
         rowSelection={{}}
@@ -99,31 +92,9 @@ const BaseTableSend = () => {
           pageSizeOptions: ['12', '24', '48', '96'],
         }}
         dateFormatter="string"
-        headerTitle={
-          <Button
-            key="mobile"
-            icon={<MobileOutlined />}
-            type="primary"
-            onClick={() => isShowModal(true)}
-          >
-            手机端填写
-          </Button>
-        }
       />
-      {/* 根据模态框是否显示决定动态加载编辑模态框组件，为了触发子组件生命周期 */}
-      {!isShowModal ? (
-        ''
-      ) : (
-        <MobileInput isModalVisible={isModalVisible} isShowModal={isShowModal} />
-      )}
-
-      {!isShowModalSend ? (
-        ''
-      ) : (
-        <SendModal isModalVisibleSend={isModalVisibleSend} isShowModalSend={isShowModalSend} />
-      )}
     </>
   );
 };
 
-export default BaseTableSend;
+export default RightTable;
